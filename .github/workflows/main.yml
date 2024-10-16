@@ -1,4 +1,5 @@
 name: Deploy to OpenShift
+
 on:
   push:
     branches:
@@ -8,35 +9,65 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Run a one-line
-        run: echo Hello
-        
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run a one-line script
+        run: echo "Hello"
+
   deploy-dev:
     runs-on: ubuntu-latest
-    enviroment:
+    environment:
       name: dev
-      url: ""
-      needs: build
+      url: ""  # Adicione a URL do ambiente, se necessário
+    needs: build
     steps:
-      - name: Run Scrips
-        run: echo hello
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Login to OpenShift
+        env:
+          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}  # Adicione o segredo do token no GitHub
+        run: |
+          echo "${OPENSHIFT_TOKEN}" | oc login api.ocp-dev.bancobai.ao:6443 --username santo.andre --token - --insecure-skip-tls-verify
+
+      - name: Run Scripts for Dev
+        run: echo "Deploying to development environment"
 
   deploy-qua:
     runs-on: ubuntu-latest
-    enviroment:
+    environment:
       name: qua
-      url: ""
-      needs: build
+      url: ""  # Adicione a URL do ambiente, se necessário
+    needs: build
     steps:
-      - name: Run Scrips
-        run: echo hello
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Login to OpenShift
+        env:
+          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}  # Adicione o segredo do token no GitHub
+        run: |
+          echo "${OPENSHIFT_TOKEN}" | oc login api.ocp-dev.bancobai.ao:6443 --username santo.andre --token - --insecure-skip-tls-verify
+
+      - name: Run Scripts for QA
+        run: echo "Deploying to QA environment"
 
   deploy-prd:
     runs-on: ubuntu-latest
-    enviroment:
+    environment:
       name: prd
-      url: ""
-      needs: build
+      url: ""  # Adicione a URL do ambiente, se necessário
+    needs: build
     steps:
-      - name: Run Scrips
-         run: echo hello prd
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Login to OpenShift
+        env:
+          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}  # Adicione o segredo do token no GitHub
+        run: |
+          echo "${OPENSHIFT_TOKEN}" | oc login api.ocp-dev.bancobai.ao:6443 --username santo.andre --token - --insecure-skip-tls-verify
+
+      - name: Run Scripts for Prod
+        run: echo "Deploying to production environment"
