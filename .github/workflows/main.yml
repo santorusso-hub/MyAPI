@@ -1,0 +1,42 @@
+name: Deploy to OpenShift
+on:
+  push:
+    branches:
+      - dev  # Altere para a branch desejada
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line
+        run: echo Hello
+        
+  deploy-dev:
+    runs-on: ubuntu-latest
+    enviroment:
+      name: dev
+      url: ""
+      needs: build
+    steps:
+      - name: Run Scrips
+        run: echo hello
+
+  deploy-qua:
+    runs-on: ubuntu-latest
+    enviroment:
+      name: qua
+      url: ""
+      needs: build
+    steps:
+      - name: Run Scrips
+        run: echo hello
+
+  deploy-prd:
+    runs-on: ubuntu-latest
+    enviroment:
+      name: prd
+      url: ""
+      needs: build
+    steps:
+      - name: Run Scrips
+         run: echo hello prd
